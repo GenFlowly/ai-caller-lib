@@ -1,35 +1,40 @@
 package com.genflowly.aicallerlib.clients
 
+import com.genflowly.aicallerlib.models.Message
+import com.genflowly.aicallerlib.models.OpenAIChatCreateRequest
+import com.genflowly.aicallerlib.models.OpenAIChatCreateResponse
+import com.genflowly.aicallerlib.models.Role
+import com.genflowly.aicallerlib.utils.Constants.OPENAI_BASE_API
+import com.genflowly.aicallerlib.utils.Constants.OPENAI_CHAT_ENDPOINT
 import io.ktor.client.*
-import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import org.koin.core.qualifier.named
 
-class ApiClient(
-    private val httpClient: HttpClient,
-    private val openAIKey: String,
-    private val model: String,
-    private val maxTokens: Int,
-    private val temperature: Double,
-    private val topP: Double
-) {
-
-    private val openAIEndpoint = "https://api.openai.com/v1/completions"
+class ApiClient : KoinComponent {
+    private val httpClient: HttpClient by inject()
+    private val openAIKey: String by inject(named("openAIKey"))
+    private val model: String by inject(named("model"))
+    private val maxTokens: Int by inject(named("maxTokens"))
+    private val temperature: Double by inject(named("temperature"))
+    private val topP: Double by inject(named("topP"))
 
     suspend fun callOpenAI(prompt: String): String {
-        val requestBody = OpenAIRequest(
+
+        val requestBody = OpenAIChatCreateRequest(
             model = model,
-            prompt = prompt,
-            max_tokens = maxTokens,
+            messages = listOf(Message(role = Role.USER, content = prompt)),
+            maxTokens = maxTokens,
             temperature = temperature,
-            top_p = topP
+            topP = topP
         )
 
-        val response: HttpResponse = httpClient.post(openAIEndpoint) {
+        val response: HttpResponse = httpClient.post("$OPENAI_BASE_API$OPENAI_CHAT_ENDPOINT") {
             headers {
                 append(HttpHeaders.Authorization, "Bearer $openAIKey")
             }
@@ -37,26 +42,16 @@ class ApiClient(
             setBody(Json.encodeToString(requestBody))
         }
 
-        val responseBody: OpenAIResponse = response.body()
-        return responseBody.choices.firstOrNull()?.text?.trim() ?: "No response"
+        // Log the raw response body for debugging
+        val rawResponseBody = response.bodyAsText()
+        println("Raw Response: $rawResponseBody")
+
+        // Check if there's an error in the response and handle it
+        if (response.status != HttpStatusCode.OK) {
+            throw Exception("API call failed with status: ${response.status}, body: $rawResponseBody")
+        }
+
+        val responseBody: OpenAIChatCreateResponse = Json.decodeFromString(rawResponseBody)
+        return responseBody.choices.firstOrNull()?.message?.content?.trim() ?: "No response"
     }
 }
-
-@Serializable
-data class OpenAIRequest(
-    val model: String,
-    val prompt: String,
-    val max_tokens: Int,
-    val temperature: Double,
-    val top_p: Double
-)
-
-@Serializable
-data class OpenAIResponse(
-    val choices: List<Choice>
-)
-
-@Serializable
-data class Choice(
-    val text: String
-)

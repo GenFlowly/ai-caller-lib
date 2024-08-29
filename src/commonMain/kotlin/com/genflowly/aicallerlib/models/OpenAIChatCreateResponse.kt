@@ -19,5 +19,6 @@ data class OpenAIChatCreateResponse(
     val created: Long,
     val model: String,
     val choices: List<ResponseChoice>,
-    val usage: OpenAIChatCreateUsage? = null
+    val usage: OpenAIChatCreateUsage? = null,
+    @SerialName("system_fingerprint") val systemFingerprint: String? = null
 )

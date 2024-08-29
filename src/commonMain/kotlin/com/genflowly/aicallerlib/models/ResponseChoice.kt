@@ -13,5 +13,6 @@ import kotlinx.serialization.Serializable
 data class ResponseChoice(
     val index: Int,
     val message: Message,
-    @SerialName("finish_reason") val finishReason: String? = null
+    @SerialName("finish_reason") val finishReason: String? = null,
+    val logprobs: OpenAILogprobs? = null
 )
