@@ -10,9 +10,9 @@ import kotlinx.serialization.Serializable
  * @param finishReason The reason why the completion stopped, e.g., "stop", "length".
  */
 @Serializable
-data class ResponseChoice(
+data class OpenAIChoiceResponse(
     val index: Int,
-    val message: Message,
+    val message: OpenAIMessageResponse,
     @SerialName("finish_reason") val finishReason: String? = null,
     val logprobs: OpenAILogprobs? = null
 )

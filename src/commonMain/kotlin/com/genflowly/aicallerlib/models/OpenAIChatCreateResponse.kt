@@ -8,17 +8,22 @@ import kotlinx.serialization.Serializable
  * @param id The unique identifier of the completion.
  * @param `object` The type of object returned, typically "chat.completion".
  * @param created The creation timestamp.
- * @param model The model that was used to generate the response.
  * @param choices A list of choices where each choice represents a possible completion.
  * @param usage An object that tracks the token usage statistics for the request.
+ * @param systemFingerprint This fingerprint represents the backend configuration that the model
+ * runs with.
+ * @param model The model that was used to generate the response.
+ * @param serviceTier Specifies the latency tier to use for processing the request.
+ *
  */
 @Serializable
 data class OpenAIChatCreateResponse(
     val id: String,
     @SerialName("object") val objectType: String,
     val created: Long,
-    val model: String,
-    val choices: List<ResponseChoice>,
+    val choices: List<OpenAIChoiceResponse>,
     val usage: OpenAIChatCreateUsage? = null,
-    @SerialName("system_fingerprint") val systemFingerprint: String? = null
-)
+    @SerialName("system_fingerprint") val systemFingerprint: String? = null,
+    override val model: String,
+    override val serviceTier: String? = null
+): OpenAIChatCreate()

@@ -1,6 +1,6 @@
 package com.genflowly.aicallerlib.clients
 
-import com.genflowly.aicallerlib.models.Message
+import com.genflowly.aicallerlib.models.OpenAIMessageRequest
 import com.genflowly.aicallerlib.models.OpenAIChatCreateRequest
 import com.genflowly.aicallerlib.models.OpenAIChatCreateResponse
 import com.genflowly.aicallerlib.models.Role
@@ -28,7 +28,7 @@ class ApiClient : KoinComponent {
 
         val requestBody = OpenAIChatCreateRequest(
             model = model,
-            messages = listOf(Message(role = Role.USER, content = prompt)),
+            messages = listOf(OpenAIMessageRequest(role = Role.USER, content = prompt)),
             maxTokens = maxTokens,
             temperature = temperature,
             topP = topP
