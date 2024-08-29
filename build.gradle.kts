@@ -1,6 +1,7 @@
 plugins {
     kotlin("multiplatform") version "1.9.0"
     kotlin("plugin.serialization") version "1.9.0"
+    `maven-publish`
 }
 
 group = "com.genflowly"
@@ -8,6 +9,18 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "com.genflowly"
+            artifactId = "library"
+            version = "0.1"
+
+            from(components["java"])
+        }
+    }
 }
 
 
@@ -41,4 +54,5 @@ kotlin {
         val commonTest by getting
         val jvmMain by getting
     }
+
 }
