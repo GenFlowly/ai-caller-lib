@@ -17,8 +17,6 @@ publishing {
             groupId = "com.genflowly"
             artifactId = "library"
             version = "0.1"
-
-            from(components["java"])
         }
     }
 }
