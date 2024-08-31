@@ -12,6 +12,16 @@ repositories {
 }
 
 publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/genflowly/ai-caller-lib")
+            credentials {
+                username = System.getenv("USERNAME")
+                password = System.getenv("TOKEN")
+            }
+        }
+    }
     publications {
         create<MavenPublication>("maven") {
             groupId = "com.genflowly"
