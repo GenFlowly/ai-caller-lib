@@ -25,7 +25,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = "com.genflowly"
-            artifactId = "library"
+            artifactId = "ai-caller-lib"
             version = "0.1"
         }
     }
