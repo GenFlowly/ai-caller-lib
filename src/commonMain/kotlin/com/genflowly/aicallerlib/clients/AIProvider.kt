@@ -1,4 +1,4 @@
-package com.genflowly.aicallerlib.provider
+package com.genflowly.aicallerlib.clients
 
 import com.genflowly.aicallerlib.models.AIRequestConfig
 

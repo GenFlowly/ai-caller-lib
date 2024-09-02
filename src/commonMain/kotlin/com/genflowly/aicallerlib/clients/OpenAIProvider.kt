@@ -1,4 +1,4 @@
-package com.genflowly.aicallerlib.provider
+package com.genflowly.aicallerlib.clients
 
 import com.genflowly.aicallerlib.models.AIRequestConfig
 import com.genflowly.aicallerlib.models.openai.OpenAIChatCreateRequest
@@ -12,26 +12,49 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import mu.KLogger
+import java.io.IOException
 
-class OpenAIProvider(private val httpClient: HttpClient) : AIProvider {
+class OpenAIProvider(private val httpClient: HttpClient, private val logger: KLogger) : AIProvider {
     override suspend fun generateResponse(apiKey: String, config: AIRequestConfig): String {
-        val requestBody = OpenAIChatCreateRequest(
-            model = config.model,
-            messages = listOf(OpenAIMessageRequest(role = config.role, content = config.content)),
-            maxTokens = config.maxOutputTokens,
-            temperature = config.temperature,
-            topP = config.topP
-        )
+        return try {
+            val requestBody = OpenAIChatCreateRequest(
+                model = config.model,
+                messages = listOf(
+                    OpenAIMessageRequest(
+                        role = config.role,
+                        content = config.content
+                    )
+                ),
+                maxTokens = config.maxOutputTokens,
+                temperature = config.temperature,
+                topP = config.topP
+            )
 
-        val response: HttpResponse = httpClient.post("$OPENAI_BASE_API$OPENAI_CHAT_ENDPOINT") {
-            headers {
-                append(HttpHeaders.Authorization, "Bearer $apiKey")
+            logger.info { "Sending request to OpenAI with model: ${config.model}, prompt: ${config.content}" }
+
+            val response: HttpResponse = httpClient.post("$OPENAI_BASE_API$OPENAI_CHAT_ENDPOINT") {
+                headers {
+                    append(HttpHeaders.Authorization, "Bearer $apiKey")
+                }
+                contentType(ContentType.Application.Json)
+                setBody(Json.encodeToString(requestBody))
             }
-            contentType(ContentType.Application.Json)
-            setBody(Json.encodeToString(requestBody))
-        }
 
-        val responseBody: OpenAIChatCreateResponse = Json.decodeFromString(response.bodyAsText())
-        return responseBody.choices.firstOrNull()?.message?.content?.trim() ?: "No response"
+            if (response.status != HttpStatusCode.OK) {
+                throw IOException("Failed to call OpenAI API: ${response.status}, ${response.bodyAsText()}")
+            }
+
+            val responseBody: OpenAIChatCreateResponse = Json.decodeFromString(response.bodyAsText())
+            logger.info { "Received response from OpenAI: ${responseBody.choices.firstOrNull()?.message?.content?.trim()}" }
+            responseBody.choices.firstOrNull()?.message?.content?.trim() ?: "No response"
+
+        } catch (e: IOException) {
+            logger.error(e) { "IO Exception occurred: ${e.message}" }
+            throw e
+        } catch (e: Exception) {
+            logger.error(e) { "An unexpected error occurred: ${e.message}" }
+            throw e
+        }
     }
 }

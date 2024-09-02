@@ -1,13 +1,14 @@
-package com.genflowly.aicallerlib.di
+package com.genflowly.aicallerlib
 
-import com.genflowly.aicallerlib.provider.AIProvider
-import com.genflowly.aicallerlib.provider.OpenAIProvider
-import io.ktor.client.*
+import com.genflowly.aicallerlib.clients.AIProvider
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
+import org.koin.core.qualifier.named
 
-class AIProviderFactory(private val httpClient: HttpClient) {
+class AIProviderFactory: KoinComponent {
     fun getProvider(vendor: String): AIProvider {
         return when (vendor) {
-            "OpenAI" -> OpenAIProvider(httpClient)
+            "OpenAI" -> get<AIProvider>(named("OpenAI"))
             else -> throw IllegalArgumentException("Unknown AI vendor: $vendor")
         }
     }
