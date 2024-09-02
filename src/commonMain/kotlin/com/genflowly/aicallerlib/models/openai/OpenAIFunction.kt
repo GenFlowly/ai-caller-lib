@@ -10,6 +10,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class OpenAIFunction(
-    val name: String,
-    val arguments: String
-)
+    val arguments: String,
+    override val name: String
+): Function()

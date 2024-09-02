@@ -31,7 +31,6 @@ publishing {
     }
 }
 
-
 kotlin {
     jvm {
         jvmToolchain(8)
@@ -57,6 +56,8 @@ kotlin {
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
                 //Should match here https://central.sonatype.com/artifact/io.ktor/ktor-serialization-kotlinx-json
+                implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
+                implementation("org.slf4j:slf4j-simple:2.0.9")
             }
         }
         val commonTest by getting
