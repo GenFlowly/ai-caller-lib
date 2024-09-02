@@ -1,5 +1,3 @@
-import java.util.*
-
 plugins {
     kotlin("multiplatform") version "1.9.0"
     kotlin("plugin.serialization") version "1.9.0"
@@ -7,14 +5,6 @@ plugins {
 }
 
 group = "com.genflowly"
-
-val versionPropertiesFile = file("version.properties")
-val versionProperties = Properties().apply {
-    load(versionPropertiesFile.inputStream())
-}
-
-val currentVersion = versionProperties["version"] as String
-version = currentVersion
 
 repositories {
     mavenCentral()
@@ -35,21 +25,8 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.genflowly"
             artifactId = "ai-caller-lib"
-            version = currentVersion
+            version = "0.3"
         }
-    }
-}
-
-tasks.withType<PublishToMavenRepository> {
-    doLast {
-        val versionParts = currentVersion.split(".")
-        val newPatchVersion = versionParts.last().toInt() + 1
-        val newVersionString = versionParts.dropLast(1).joinToString(".") + ".$newPatchVersion"
-
-        versionProperties["version"] = newVersionString
-        versionProperties.store(versionPropertiesFile.outputStream(), null)
-
-        println("Version incremented to $newVersionString")
     }
 }
 
