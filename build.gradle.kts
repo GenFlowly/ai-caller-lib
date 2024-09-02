@@ -25,7 +25,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.genflowly"
             artifactId = "ai-caller-lib"
-            version = "0.3"
+            version = "0.4"
         }
     }
 }
@@ -59,7 +59,16 @@ kotlin {
                 implementation("org.slf4j:slf4j-simple:2.0.9")
             }
         }
-        val commonTest by getting
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+                implementation("io.mockk:mockk:1.13.3")
+                implementation("io.insert-koin:koin-test:$koinVersion")
+                implementation("io.insert-koin:koin-test-junit4:$koinVersion")
+                implementation("io.ktor:ktor-client-mock:$ktorVersion")
+            }
+
+        }
         val jvmMain by getting
     }
 
