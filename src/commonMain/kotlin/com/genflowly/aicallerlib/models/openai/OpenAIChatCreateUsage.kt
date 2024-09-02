@@ -1,10 +1,12 @@
-package com.genflowly.aicallerlib.models
+package com.genflowly.aicallerlib.models.openai
 
+import com.genflowly.aicallerlib.models.Usage
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
  * Represents the usage statistics for the request.
+ * Source - https://platform.openai.com/docs/api-reference/chat/object#chat/object-usage
  *
  * @param promptTokens The number of tokens used in the prompt.
  * @param completionTokens The number of tokens used in the completion.
@@ -12,7 +14,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class OpenAIChatCreateUsage(
-    @SerialName("prompt_tokens") val promptTokens: Int,
-    @SerialName("completion_tokens") val completionTokens: Int,
-    @SerialName("total_tokens") val totalTokens: Int
-)
+    @SerialName("prompt_tokens") override val promptTokens: Int,
+    @SerialName("completion_tokens") override val completionTokens: Int,
+    @SerialName("total_tokens") override val totalTokens: Int
+): Usage()

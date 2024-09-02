@@ -1,4 +1,5 @@
-package com.genflowly.aicallerlib.models
+package com.genflowly.aicallerlib.models.openai
+import com.genflowly.aicallerlib.models.GenerationConfigurable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -37,11 +38,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class OpenAIChatCreateRequest(
     val messages: List<OpenAIMessageRequest>,
-    val temperature: Double? = null,
-    @SerialName("top_p") val topP: Double? = null,
-    val n: Int? = null,
     val stream: Boolean? = null,
-    val stopSequence:List<String>? = null,
+    val stop: List<String>? = null,
+    val n: Int? = null,
     @SerialName("max_tokens") val maxTokens: Int? = null,
     @SerialName("presence_penalty") val presencePenalty: Double? = null,
     @SerialName("frequency_penalty") val frequencyPenalty: Double? = null,
@@ -52,5 +51,11 @@ data class OpenAIChatCreateRequest(
     val seed: Int? = null,
     override val model: String,
     override val serviceTier: String? = null,
+    override val temperature: Double? = null,
+    @SerialName("top_p") override val topP: Double? = null,
     // TODO Add tools array
-): OpenAIChatCreate()
+): OpenAIChatCreate(), GenerationConfigurable {
+    override val candidateCount = n
+    override val stopSequences = stop
+    override val maxOutputTokens = maxTokens
+}

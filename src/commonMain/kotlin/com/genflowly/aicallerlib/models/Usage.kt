@@ -1,4 +1,10 @@
 package com.genflowly.aicallerlib.models
 
-class Usage {
+import kotlinx.serialization.Serializable
+
+@Serializable
+abstract class Usage {
+    abstract val promptTokens: Int?
+    abstract val completionTokens: Int?
+    abstract val totalTokens: Int?
 }

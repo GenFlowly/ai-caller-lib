@@ -1,4 +1,5 @@
 package com.genflowly.aicallerlib.models
 
-class Function {
+abstract class Function {
+    abstract val name: String
 }

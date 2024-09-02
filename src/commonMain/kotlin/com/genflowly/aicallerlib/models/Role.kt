@@ -9,5 +9,6 @@ import kotlinx.serialization.Serializable
 enum class Role {
     @SerialName("system") SYSTEM,
     @SerialName("user") USER,
-    @SerialName("assistant") ASSISTANT
+    @SerialName("assistant") ASSISTANT,
+    @SerialName("model") MODEL,
 }

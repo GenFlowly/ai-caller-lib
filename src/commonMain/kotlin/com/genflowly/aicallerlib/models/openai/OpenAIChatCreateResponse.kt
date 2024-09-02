@@ -1,9 +1,10 @@
-package com.genflowly.aicallerlib.models
+package com.genflowly.aicallerlib.models.openai
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
  * Represents a response from the OpenAI Chat API's `chat/create` endpoint.
+ * Source - https://ai.google.dev/api/caching#mode
  *
  * @param id The unique identifier of the completion.
  * @param `object` The type of object returned, typically "chat.completion".

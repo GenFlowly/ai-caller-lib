@@ -1,4 +1,4 @@
-package com.genflowly.aicallerlib.models
+package com.genflowly.aicallerlib.models.openai
 
 import kotlinx.serialization.SerialName
 
