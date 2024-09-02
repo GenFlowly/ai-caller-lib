@@ -1,3 +1,9 @@
 package com.genflowly.aicallerlib.models.gemini
 
-data class GeminiFunctionCallingConfig()
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class GeminiFunctionCallingConfig(
+    val mode: GeminiFunctionExecutionMode? = null,
+    val allowedFunctionNames: List<String>? = null
+)

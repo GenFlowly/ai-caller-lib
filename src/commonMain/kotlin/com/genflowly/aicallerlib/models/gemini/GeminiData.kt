@@ -1,7 +1,12 @@
-package com.genflowly.aicallerlib.models
+package com.genflowly.aicallerlib.models.gemini
 
+import com.genflowly.aicallerlib.models.Blob
 import kotlinx.serialization.Serializable
 
+/**
+ * Union field data can be only one of the following.
+ * Source - https://ai.google.dev/api/caching#part
+ */
 @Serializable
 sealed class GeminiData {
     data class Text(val text: String) : GeminiData()

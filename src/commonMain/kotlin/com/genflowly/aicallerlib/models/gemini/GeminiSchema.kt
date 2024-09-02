@@ -1,5 +1,6 @@
-package com.genflowly.aicallerlib.models
+package com.genflowly.aicallerlib.models.gemini
 
+import com.genflowly.aicallerlib.models.Type
 import kotlinx.serialization.Serializable
 
 /**
@@ -7,17 +8,13 @@ import kotlinx.serialization.Serializable
  * objects, but also primitives and arrays. Represents a select subset of an OpenAPI 3.0 schema
  * object.
  *
- * Reference - https://ai.google.dev/api/caching#schema
+ * Source - https://ai.google.dev/api/caching#schema
  *
  * @param type Data type.
  * @param format The format of the data. This is used only for primitive datatypes.
- * Supported formats: for NUMBER type: float, double for INTEGER type: int32,
- * int64 for STRING type: enum
  * @param description A brief description of the parameter. This could contain examples of use.
- * Parameter description may be formatted as Markdown.
  * @param nullable Indicates if the value may be null.
- * @param enum Possible values of the element of Type.STRING with enum format. For example we can
- * define an Enum Direction as : {type:STRING, format:enum, enum:["EAST", NORTH", "SOUTH", "WEST"]}
+ * @param enum Possible values of the element of Type.STRING with enum format.
  * @param maxItems Maximum number of the elements for Type.ARRAY.
  * @param properties Properties of Type.OBJECT.
  * @param required Required properties of Type.OBJECT.
@@ -28,10 +25,11 @@ import kotlinx.serialization.Serializable
 data class GeminiSchema(
     val type: Type,
     val format: String? = null,
+    val description: String? = null,
     val nullable: Boolean? = null,
-    val enum: Array<String>? = null,
+    val enum: List<String>? = null,
     val maxItems: String? = null,
     val properties: HashMap<String, GeminiSchema>? = null,
-    val required: Array<String>? = null,
+    val required: List<String>? = null,
     val items: GeminiSchema? = null
 )
