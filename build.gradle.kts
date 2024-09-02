@@ -25,7 +25,8 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.genflowly"
             artifactId = "ai-caller-lib"
-            version = "0.4"
+            version = "0.5"
+            from(components["kotlin"])
         }
     }
 }
