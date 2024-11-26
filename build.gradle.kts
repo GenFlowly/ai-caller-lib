@@ -45,19 +45,19 @@ kotlin {
     
     sourceSets {
         val koinVersion = "3.5.6"
-        val ktorVersion = "2.3.9"
+        val ktorVersion = "3.0.0"
         val commonMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-client-cio:$ktorVersion")
-                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-                implementation(platform("io.insert-koin:koin-bom:$koinVersion"))
-                implementation("io.insert-koin:koin-core")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
+                api("io.ktor:ktor-client-core:$ktorVersion")
+                api("io.ktor:ktor-client-cio:$ktorVersion")
+                api("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+                api(platform("io.insert-koin:koin-bom:$koinVersion"))
+                api("io.insert-koin:koin-core")
+                api("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
                 //Should match here https://central.sonatype.com/artifact/io.ktor/ktor-serialization-kotlinx-json
-                implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
-                implementation("org.slf4j:slf4j-simple:2.0.9")
+                api("io.github.microutils:kotlin-logging-jvm:3.0.5")
+                api("org.slf4j:slf4j-simple:2.0.9")
             }
         }
         val commonTest by getting {
