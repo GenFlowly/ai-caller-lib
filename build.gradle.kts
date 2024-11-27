@@ -32,6 +32,17 @@ publishing {
 }
 
 kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
+    jvm {
+        withJava()
+        testRuns.named("test") {
+            executionTask.configure {
+                useJUnitPlatform()
+            }
+        }
+    }
 
     
     sourceSets {
@@ -61,6 +72,7 @@ kotlin {
             }
 
         }
+        val jvmMain by getting
     }
 
 }
