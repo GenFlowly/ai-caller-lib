@@ -18,6 +18,6 @@ data class OpenAIChatCreateUsage(
     @SerialName("completion_tokens") override val completionTokens: Int,
     @SerialName("total_tokens") override val totalTokens: Int,
     @SerialName("completion_tokens_details") val completionTokensDetails: Int,
-    @SerialName("prompt_tokens_details") val promptTokensDetails: Int
+    @SerialName("prompt_tokens_details") val promptTokensDetails: PromptTokensDetails
 
 ): Usage()
