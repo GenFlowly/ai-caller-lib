@@ -4,10 +4,13 @@ import com.genflowly.aicallerlib.models.AIRequestConfig
 import com.genflowly.aicallerlib.models.Role
 import io.ktor.client.*
 import io.ktor.client.engine.mock.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
 import io.ktor.utils.io.errors.*
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 import mu.KLogger
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -18,6 +21,10 @@ class OpenAIProviderTest {
 
     private lateinit var openAIProvider: OpenAIProvider
     private val logger: KLogger = mockk(relaxed = true)
+    private val json = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+    }
 
     private val choices =
         """[{"index": 0,"message": {"role": "assistant","content": "Test response","refusal": null},
@@ -38,8 +45,12 @@ class OpenAIProviderTest {
             )
         }
 
-        val httpClient = HttpClient(mockEngine)
-        openAIProvider = OpenAIProvider(httpClient, logger)
+        val httpClient = HttpClient(mockEngine) {
+            install(ContentNegotiation) {
+                json(json) // Use the configured Json instance
+            }
+        }
+        openAIProvider = OpenAIProvider(httpClient, logger, json)
     }
 
     @Test
@@ -71,7 +82,7 @@ class OpenAIProviderTest {
         }
 
         val httpClient = HttpClient(mockEngine)
-        val failingProvider = OpenAIProvider(httpClient, logger)
+        val failingProvider = OpenAIProvider(httpClient, logger, json)
 
         val config = AIRequestConfig(
             model = "text-davinci-003",
