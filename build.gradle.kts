@@ -5,6 +5,7 @@ plugins {
 }
 
 group = "com.genflowly"
+version = "0.0.2"
 
 repositories {
     mavenCentral()
@@ -23,9 +24,9 @@ publishing {
     }
     publications {
         create<MavenPublication>("maven") {
-            groupId = "com.genflowly"
+            groupId = project.group.toString()
             artifactId = "ai-caller-lib"
-            version = "0.0.2"
+            version = project.version.toString()
             from(components["kotlin"])
         }
     }
