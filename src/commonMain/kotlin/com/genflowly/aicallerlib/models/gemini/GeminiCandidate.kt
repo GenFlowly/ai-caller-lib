@@ -1,6 +1,7 @@
 package com.genflowly.aicallerlib.models.gemini
 
 import com.genflowly.aicallerlib.models.CandidateResponse
+import com.genflowly.aicallerlib.models.AIResponse
 import kotlinx.serialization.Serializable
 
 /**
@@ -25,4 +26,4 @@ data class GeminiCandidate(
     val index: Int? = null,
     override val content: GeminiContent,
     override val finishReason: GeminiFinishReason
-): CandidateResponse<GeminiContent, GeminiFinishReason>()
+): CandidateResponse<GeminiContent, GeminiFinishReason>(), AIResponse

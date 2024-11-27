@@ -1,8 +1,8 @@
 package com.genflowly.aicallerlib.clients
 
 import com.genflowly.aicallerlib.models.AIRequestConfig
-import com.genflowly.aicallerlib.models.openai.OpenAIChatCreateResponse
+import com.genflowly.aicallerlib.models.AIResponse
 
-interface AIProvider {
-    suspend fun generateResponseFromOpenAI(apiKey: String, config: AIRequestConfig): OpenAIChatCreateResponse
+interface AIProvider<T : AIResponse> {
+    suspend fun generateResponse(apiKey: String, config: AIRequestConfig): T
 }

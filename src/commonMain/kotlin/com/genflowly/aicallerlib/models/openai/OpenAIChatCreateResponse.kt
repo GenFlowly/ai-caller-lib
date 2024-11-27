@@ -1,4 +1,5 @@
 package com.genflowly.aicallerlib.models.openai
+import com.genflowly.aicallerlib.models.AIResponse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -27,4 +28,4 @@ data class OpenAIChatCreateResponse(
     @SerialName("system_fingerprint") val systemFingerprint: String? = null,
     override val model: String,
     override val serviceTier: String? = null
-): OpenAIChatCreate()
+): OpenAIChatCreate(), AIResponse

@@ -2,6 +2,7 @@ package com.genflowly.aicallerlib.clients
 
 import com.genflowly.aicallerlib.models.AIRequestConfig
 import com.genflowly.aicallerlib.models.Role
+import com.genflowly.aicallerlib.models.openai.OpenAIChatCreateResponse
 import io.ktor.client.*
 import io.ktor.client.engine.mock.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -64,8 +65,13 @@ class OpenAIProviderTest {
             topP = 1.0
         )
 
-        val responseBody = openAIProvider.generateResponseFromOpenAI("fake-api-key", config)
-        assertEquals("Test response", responseBody.choices.firstOrNull()?.message?.content?.trim())
+        val response = openAIProvider.generateResponse("fake-api-key", config) as? OpenAIChatCreateResponse
+        if (response is OpenAIChatCreateResponse) {
+            assertEquals("Test response", response.choices.firstOrNull()?.message?.content?.trim())
+        } else {
+            // Handle the unexpected type
+            throw IllegalStateException("Response is not of type OpenAIChatCreateResponse")
+        }
     }
 
     @Test
@@ -95,7 +101,7 @@ class OpenAIProviderTest {
 
         assertFailsWith<IOException> {
             runBlocking {
-                failingProvider.generateResponseFromOpenAI("fake-api-key", config)
+                failingProvider.generateResponse("fake-api-key", config)
             }
         }
     }

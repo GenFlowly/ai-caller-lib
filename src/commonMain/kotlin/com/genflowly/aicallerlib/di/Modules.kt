@@ -2,6 +2,8 @@ package com.genflowly.aicallerlib.di
 
 import com.genflowly.aicallerlib.clients.AIProvider
 import com.genflowly.aicallerlib.clients.OpenAIProvider
+import com.genflowly.aicallerlib.models.openai.OpenAIChatCreateResponse
+import com.genflowly.aicallerlib.utils.Constants.OPENAI
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -17,7 +19,7 @@ fun commonModule(): Module = module {
     single { provideJson() }
     single { provideHttpClient(get()) }
     single<KLogger> { logger("Logger") }
-    single<AIProvider>(named("OpenAI")) { OpenAIProvider(get(), get(), get()) }
+    single<AIProvider<OpenAIChatCreateResponse>>(named(OPENAI)) { OpenAIProvider(get(), get(), get()) }
 }
 
 fun provideJson(): Json {

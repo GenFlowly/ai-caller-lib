@@ -3,6 +3,7 @@ package com.genflowly.aicallerlib.utils
 import com.genflowly.aicallerlib.AIProviderFactory
 import com.genflowly.aicallerlib.clients.AIProvider
 import com.genflowly.aicallerlib.di.commonModule
+import com.genflowly.aicallerlib.models.openai.OpenAIChatCreateResponse
 import io.mockk.mockk
 import org.koin.core.component.inject
 import org.koin.core.context.GlobalContext.startKoin
@@ -26,7 +27,7 @@ class AIProviderFactoryTest : KoinTest {
             modules(
                 commonModule(),
                 module {
-                    single<AIProvider>(named("OpenAI")) { mockk<AIProvider>(relaxed = true) }
+                    single<AIProvider<OpenAIChatCreateResponse>>(named("OpenAI")) { mockk<AIProvider<OpenAIChatCreateResponse>>(relaxed = true) }
                     single { AIProviderFactory() }
                 }
             )
@@ -40,7 +41,7 @@ class AIProviderFactoryTest : KoinTest {
 
     @Test
     fun `test getProvider returns correct provider`() {
-        val mockProvider: AIProvider = factory.getProvider("OpenAI")
+        val mockProvider: AIProvider<OpenAIChatCreateResponse> = factory.getProvider("OpenAI")
 
         assertEquals(mockProvider, factory.getProvider("OpenAI"))
     }
@@ -48,9 +49,8 @@ class AIProviderFactoryTest : KoinTest {
     @Test
     fun `test getProvider throws exception for unknown vendor`() {
         val factory = AIProviderFactory()
-
         assertFailsWith<IllegalArgumentException> {
-            factory.getProvider("UnknownVendor")
+            factory.getProvider<OpenAIChatCreateResponse>("UnknownVendor")
         }
     }
 }
