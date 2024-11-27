@@ -15,7 +15,8 @@ import kotlinx.serialization.json.Json
 import mu.KLogger
 import java.io.IOException
 
-class OpenAIProvider(private val httpClient: HttpClient, private val logger: KLogger) : AIProvider {
+class OpenAIProvider(private val httpClient: HttpClient, private val logger: KLogger, private val json: Json) :
+    AIProvider {
     override suspend fun generateResponse(apiKey: String, config: AIRequestConfig): String {
         return try {
             val requestBody = OpenAIChatCreateRequest(
@@ -38,14 +39,14 @@ class OpenAIProvider(private val httpClient: HttpClient, private val logger: KLo
                     append(HttpHeaders.Authorization, "Bearer $apiKey")
                 }
                 contentType(ContentType.Application.Json)
-                setBody(Json.encodeToString(requestBody))
+                setBody(json.encodeToString(requestBody))
             }
 
             if (response.status != HttpStatusCode.OK) {
                 throw IOException("Failed to call OpenAI API: ${response.status}, ${response.bodyAsText()}")
             }
-
-            val responseBody: OpenAIChatCreateResponse = Json.decodeFromString(response.bodyAsText())
+            logger.info { "Received response from OpenAI: $response.bodyAsText()" }
+            val responseBody: OpenAIChatCreateResponse = json.decodeFromString(response.bodyAsText())
             logger.info { "Received response from OpenAI: ${responseBody.choices.firstOrNull()?.message?.content?.trim()}" }
             responseBody.choices.firstOrNull()?.message?.content?.trim() ?: "No response"
 

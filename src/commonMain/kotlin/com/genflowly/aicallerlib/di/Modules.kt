@@ -14,18 +14,23 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 fun commonModule(): Module = module {
-    single { provideHttpClient() }
+    single { provideJson() }
+    single { provideHttpClient(get()) }
     single<KLogger> { logger("Logger") }
-    single<AIProvider>(named("OpenAI")) { OpenAIProvider(get(), get()) }
+    single<AIProvider>(named("OpenAI")) { OpenAIProvider(get(), get(), get()) }
 }
 
-fun provideHttpClient(): HttpClient {
+fun provideJson(): Json {
+    return Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+    }
+}
+
+fun provideHttpClient(json: Json): HttpClient {
     return HttpClient(CIO) {
         install(ContentNegotiation) {
-            json(Json {
-                ignoreUnknownKeys = true
-                isLenient = true
-            })
+            json(json)
         }
         // Additional configurations for HttpClient can be added here
     }
