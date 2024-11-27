@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
  * @param cachedTokens Cached tokens present in the prompt.
  */
 @Serializable
-data class PromptTokensDetails(
+data class OpenAIPromptTokensDetails(
     @SerialName("audio_tokens") val audioTokens: Int,
     @SerialName("cached_tokens") val cachedTokens: Int
 )

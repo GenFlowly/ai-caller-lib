@@ -5,7 +5,6 @@ plugins {
 }
 
 group = "com.genflowly"
-version = "0.0.6"
 
 repositories {
     mavenCentral()
@@ -22,14 +21,14 @@ publishing {
             }
         }
     }
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = project.group.toString()
-            artifactId = "ai-caller-lib"
-            version = project.version.toString()
-            from(components["kotlin"])
-        }
-    }
+//    publications {
+//        create<MavenPublication>("maven") {
+//            groupId = project.group.toString()
+//            artifactId = "ai-caller-lib"
+//            version = project.version.toString()
+//            from(components["kotlin"])
+//        }
+//    }
 }
 
 kotlin {
