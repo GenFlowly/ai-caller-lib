@@ -64,8 +64,8 @@ class OpenAIProviderTest {
             topP = 1.0
         )
 
-        val response = openAIProvider.generateResponse("fake-api-key", config)
-        assertEquals("Test response", response)
+        val responseBody = openAIProvider.generateResponseFromOpenAI("fake-api-key", config)
+        assertEquals("Test response", responseBody.choices.firstOrNull()?.message?.content?.trim())
     }
 
     @Test
@@ -95,7 +95,7 @@ class OpenAIProviderTest {
 
         assertFailsWith<IOException> {
             runBlocking {
-                failingProvider.generateResponse("fake-api-key", config)
+                failingProvider.generateResponseFromOpenAI("fake-api-key", config)
             }
         }
     }
