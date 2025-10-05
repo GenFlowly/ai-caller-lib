@@ -10,5 +10,5 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class GeminiPart(
-    val data: GeminiData
+    val text: String
 )

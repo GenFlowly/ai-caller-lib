@@ -1,8 +1,11 @@
 package com.genflowly.aicallerlib.di
 
 import com.genflowly.aicallerlib.clients.AIProvider
+import com.genflowly.aicallerlib.clients.GoogleGeminiProvider
 import com.genflowly.aicallerlib.clients.OpenAIProvider
+import com.genflowly.aicallerlib.models.gemini.GeminiGenerateContentResponse
 import com.genflowly.aicallerlib.models.openai.OpenAIChatCreateResponse
+import com.genflowly.aicallerlib.utils.Constants.GOOGLE_GEMINI
 import com.genflowly.aicallerlib.utils.Constants.OPENAI
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -20,6 +23,7 @@ fun commonModule(): Module = module {
     single { provideHttpClient(get()) }
     single<KLogger> { logger("Logger") }
     single<AIProvider<OpenAIChatCreateResponse>>(named(OPENAI)) { OpenAIProvider(get(), get(), get()) }
+    single<AIProvider<GeminiGenerateContentResponse>>(named(GOOGLE_GEMINI)) { GoogleGeminiProvider(get(), get(), get()) }
 }
 
 fun provideJson(): Json {

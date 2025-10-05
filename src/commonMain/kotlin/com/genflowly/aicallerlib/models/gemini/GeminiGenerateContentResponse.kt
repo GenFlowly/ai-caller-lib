@@ -1,5 +1,6 @@
 package com.genflowly.aicallerlib.models.gemini
 
+import com.genflowly.aicallerlib.models.AIResponse
 import kotlinx.serialization.Serializable
 
 /**
@@ -15,4 +16,4 @@ data class GeminiGenerateContentResponse(
     val candidates: List<GeminiCandidate>,
     val promptFeedback: GeminiPromptFeedback? = null,
     val usageMetadata: GeminiUsageMetadata
-)
+): AIResponse

@@ -1,7 +1,7 @@
 package com.genflowly.aicallerlib.models.gemini
 
-import com.genflowly.aicallerlib.models.CandidateResponse
 import com.genflowly.aicallerlib.models.AIResponse
+import com.genflowly.aicallerlib.models.CandidateResponse
 import kotlinx.serialization.Serializable
 
 /**
@@ -21,7 +21,7 @@ import kotlinx.serialization.Serializable
 data class GeminiCandidate(
     val safetyRatings: List<GeminiSafetyRating>? = null,
     val citationMetadata: GeminiCitationMetadata? = null,
-    val tokenCount: Int,
+    val tokenCount: Int? = null,
     val groundingAttributions: GeminiGroundingAttribution? = null,
     val index: Int? = null,
     override val content: GeminiContent,

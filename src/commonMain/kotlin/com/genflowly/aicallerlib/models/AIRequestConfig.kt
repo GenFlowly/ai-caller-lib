@@ -8,5 +8,6 @@ data class AIRequestConfig(
     override val candidateCount: Int? = null,
     override val temperature: Double? = null,
     override val topP: Double? = null,
+    override val topK: Double? = null,
     override val maxOutputTokens: Int? = null
 ): Message<String>(), GenerationConfigurable

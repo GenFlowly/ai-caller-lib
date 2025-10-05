@@ -6,4 +6,5 @@ interface GenerationConfigurable {
     val temperature: Double?
     val topP: Double?
     val maxOutputTokens: Int?
+    val topK: Double?
 }

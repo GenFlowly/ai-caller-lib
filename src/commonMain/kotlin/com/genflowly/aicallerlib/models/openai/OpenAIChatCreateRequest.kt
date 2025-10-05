@@ -52,6 +52,7 @@ data class OpenAIChatCreateRequest(
     override val model: String,
     override val serviceTier: String? = null,
     override val temperature: Double? = null,
+    override val topK: Double? = null,
     @SerialName("top_p") override val topP: Double? = null,
     // TODO Add tools array
 ): OpenAIChatCreate(), GenerationConfigurable {

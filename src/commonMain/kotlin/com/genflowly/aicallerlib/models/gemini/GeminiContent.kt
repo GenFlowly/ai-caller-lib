@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class GeminiContent(
-    val parts: List<GeminiPart>? = null,
+    val parts: List<GeminiPart>,
     override val role: Role? = null
 ): Message<List<GeminiPart>>() {
     override val content = parts

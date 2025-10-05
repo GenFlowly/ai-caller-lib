@@ -20,7 +20,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class GeminiGenerationConfig(
-    val topK: Int? = null,
+    override val topK: Double? = null,
     val responseMimeType: String? = null,
     val responseSchema: GeminiSchema? = null,
     override val stopSequences: List<String>? = null,
