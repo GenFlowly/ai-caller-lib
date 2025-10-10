@@ -8,20 +8,22 @@ plugins {
 
 group = "com.genflowly"
 
-fun getGitTagVersion(): String {
-    return try {
-        val stdout = ByteArrayOutputStream()
-        project.exec {
-            commandLine = listOf("git", "describe", "--tags", "--always")
-            standardOutput = stdout
-        }
-        stdout.toString().trim()
-    } catch (e: Exception) {
-        "0.0.0"
+val gitCommitCountProvider = providers.provider {
+    val stdout = ByteArrayOutputStream()
+    project.exec {
+        commandLine("git", "rev-list", "--count", "HEAD")
+        standardOutput = stdout
+        isIgnoreExitValue = true
     }
+    stdout.toString().trim().toIntOrNull() ?: 0
 }
 
-version = getGitTagVersion()
+
+val major = 0
+val minor = 0
+val patch: Int = gitCommitCountProvider.get()
+version = "$major.$minor.$patch"
+
 
 repositories {
     mavenCentral()
