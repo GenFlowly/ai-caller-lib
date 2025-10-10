@@ -61,6 +61,9 @@ kotlin {
                 //Should match here https://central.sonatype.com/artifact/io.ktor/ktor-serialization-kotlinx-json
                 api("io.github.microutils:kotlin-logging-jvm:3.0.5")
                 api("org.slf4j:slf4j-simple:2.0.9")
+                implementation("com.anthropic:anthropic-java:2.8.1")
+                implementation("com.google.genai:google-genai:1.4.1")
+                implementation("com.openai:openai-java:4.2.0")
             }
         }
         val commonTest by getting {

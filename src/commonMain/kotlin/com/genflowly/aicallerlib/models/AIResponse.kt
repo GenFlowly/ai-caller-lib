@@ -1,5 +1,9 @@
 package com.genflowly.aicallerlib.models
 
-interface AIResponse {
+interface AIResponse<T>  {
+
+    fun getText(): String?
+
+    fun getRawResponse(): T
 
 }
