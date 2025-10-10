@@ -8,17 +8,20 @@ plugins {
 
 group = "com.genflowly"
 
-val gitCommitCount by lazy {
-    ByteArrayOutputStream().use { os ->
-        exec {
-            commandLine = listOf("git", "rev-list", "--count", "HEAD")
-            standardOutput = os
+fun getGitTagVersion(): String {
+    return try {
+        val stdout = ByteArrayOutputStream()
+        project.exec {
+            commandLine = listOf("git", "describe", "--tags", "--always")
+            standardOutput = stdout
         }
-        os.toString().trim()
+        stdout.toString().trim()
+    } catch (e: Exception) {
+        "0.0.0"
     }
 }
 
-version = "0.0.$gitCommitCount"
+version = getGitTagVersion()
 
 repositories {
     mavenCentral()
