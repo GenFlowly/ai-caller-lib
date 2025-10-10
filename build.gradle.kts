@@ -10,7 +10,7 @@ group = "com.genflowly"
 
 val gitCommitCountProvider = providers.provider {
     val stdout = ByteArrayOutputStream()
-    project.exec {
+    exec {
         commandLine("git", "rev-list", "--count", "HEAD")
         standardOutput = stdout
         isIgnoreExitValue = true
