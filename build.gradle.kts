@@ -72,7 +72,7 @@ kotlin {
                 api("io.ktor:ktor-client-core:$ktorVersion")
                 api("io.ktor:ktor-client-cio:$ktorVersion")
                 api("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-                api(platform("io.insert-koin:koin-bom:$koinVersion"))
+                api("io.insert-koin:koin-bom:$koinVersion")
                 api("io.insert-koin:koin-core")
                 api("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
