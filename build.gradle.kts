@@ -1,3 +1,5 @@
+import java.io.ByteArrayOutputStream
+
 plugins {
     kotlin("multiplatform") version "2.0.21"
     kotlin("plugin.serialization") version "2.0.21"
@@ -5,7 +7,18 @@ plugins {
 }
 
 group = "com.genflowly"
-version = "0.0.12"
+
+val gitCommitCount by lazy {
+    ByteArrayOutputStream().use { os ->
+        exec {
+            commandLine = listOf("git", "rev-list", "--count", "HEAD")
+            standardOutput = os
+        }
+        os.toString().trim()
+    }
+}
+
+version = "0.0.$gitCommitCount"
 
 repositories {
     mavenCentral()
