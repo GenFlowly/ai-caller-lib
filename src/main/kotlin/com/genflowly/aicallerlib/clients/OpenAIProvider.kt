@@ -20,7 +20,7 @@ class OpenAIProvider(
         request: AIRequest
     ): OpenAIResponse = withContext(Dispatchers.IO) {
         require(request is OpenAIRequest) {
-            "Config must be of type OpenAIRequest"
+            "AIRequest must be of type OpenAIRequest"
         }
 
         val params: ResponseCreateParams = request.getParams()

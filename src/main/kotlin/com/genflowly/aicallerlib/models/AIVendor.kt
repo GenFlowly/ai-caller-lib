@@ -8,5 +8,4 @@ enum class AIVendor {
     @SerialName("OPENAI") OPENAI,
     @SerialName("GEMINI") GEMINI,
     @SerialName("CLAUDE") CLAUDE,
-    @SerialName("MODEL") MODEL,
 }

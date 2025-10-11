@@ -17,7 +17,7 @@ class GeminiProvider(
         request: AIRequest
     ): GeminiResponse = withContext(Dispatchers.IO) {
         require(request is GeminiRequest) {
-            "Config must be of type GeminiRequest"
+            "AIRequest must be of type GeminiRequest"
         }
 
         val response = client.models.generateContent(

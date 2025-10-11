@@ -18,7 +18,7 @@ class ClaudeProvider(
         request: AIRequest
     ): ClaudeResponse = withContext(Dispatchers.IO) {
         require(request is ClaudeRequest) {
-            "Config must be of type AnthropicRequest"
+            "AIRequest must be of type AnthropicRequest"
         }
 
         val params : MessageCreateParams = request.getParams()
