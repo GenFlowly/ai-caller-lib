@@ -8,21 +8,31 @@ plugins {
 
 group = "com.genflowly"
 
-val gitCommitCountProvider = providers.provider {
+fun gitCommand(vararg args: String): String {
     val stdout = ByteArrayOutputStream()
-    exec {
-        commandLine("git", "rev-list", "--count", "HEAD")
+    project.exec {
+        commandLine("git", *args)
         standardOutput = stdout
-        isIgnoreExitValue = true
     }
-    stdout.toString().trim().toIntOrNull() ?: 0
+    return stdout.toString().trim()
 }
 
+val baseVersion = "0.0"
+val buildNumber = try {
+    gitCommand("rev-list", "--count", "HEAD")
+} catch (e: Exception) {
+    "0"
+}
 
-val major = 0
-val minor = 0
-val patch: Int = gitCommitCountProvider.get()
-version = "$major.$minor.$patch"
+version = "$baseVersion.$buildNumber"
+
+
+tasks.register("printVersion") {
+    doLast {
+        println(project.version)
+    }
+}
+
 
 
 repositories {
@@ -72,7 +82,6 @@ kotlin {
                 api("io.ktor:ktor-client-core:$ktorVersion")
                 api("io.ktor:ktor-client-cio:$ktorVersion")
                 api("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-                api("io.insert-koin:koin-bom:$koinVersion")
                 api("io.insert-koin:koin-core")
                 api("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
@@ -94,7 +103,12 @@ kotlin {
             }
 
         }
-        val jvmMain by getting
+        val jvmMain by getting {
+            dependencies {
+                implementation(platform("io.insert-koin:koin-bom:$koinVersion"))
+                implementation("io.insert-koin:koin-core")
+            }
+        }
     }
 
 }
