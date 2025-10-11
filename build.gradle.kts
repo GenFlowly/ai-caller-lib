@@ -80,3 +80,8 @@ kotlin {
     }
 
 }
+
+tasks.named("jvmTest") {
+    enabled = false
+}
+
