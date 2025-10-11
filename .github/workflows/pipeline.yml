@@ -45,12 +45,3 @@ jobs:
       env:
         USERNAME: ${{ github.actor }}
         TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Create Git Tag
-      if: github.ref == 'refs/heads/main'
-      run: |
-        VERSION=$(./gradlew -q printVersion)
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        git tag "v$VERSION"
-        git push origin "v$VERSION"
