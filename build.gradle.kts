@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.genflowly"
-version = "0.0.18"
+version = "0.0.19"
 
 repositories {
     mavenCentral()
@@ -79,4 +79,8 @@ publishing {
             }
         }
     }
+}
+
+tasks.jar {
+    from(sourceSets.main.get().output)
 }
