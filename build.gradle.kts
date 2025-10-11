@@ -23,18 +23,14 @@ publishing {
             }
         }
     }
-//    publications {
-//        create<MavenPublication>("maven") {
-//            groupId = project.group.toString()
-//            artifactId = "ai-caller-lib"
-//            version = project.version.toString()
-//            from(components["kotlin"])
-//        }
-//
-//        named("kotlinMultiplatform") {
-//            tasks.forEach { it.enabled = false }
-//        }
-//    }
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = project.group.toString()
+            artifactId = "ai-caller-lib"
+            version = project.version.toString()
+            from(components["kotlin"])
+        }
+    }
 }
 
 kotlin {
