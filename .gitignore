@@ -43,4 +43,4 @@ bin/
 ### Mac OS ###
 .DS_Store
 
-src/commonMain/kotlin/com/genflowly/aicallerlib/example/
+src/main/kotlin/com/genflowly/aicallerlib/example/
