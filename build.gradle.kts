@@ -1,5 +1,3 @@
-import java.io.ByteArrayOutputStream
-
 plugins {
     kotlin("multiplatform") version "2.0.21"
     kotlin("plugin.serialization") version "2.0.21"
@@ -8,32 +6,7 @@ plugins {
 
 group = "com.genflowly"
 
-fun gitCommand(vararg args: String): String {
-    val stdout = ByteArrayOutputStream()
-    project.exec {
-        commandLine("git", *args)
-        standardOutput = stdout
-    }
-    return stdout.toString().trim()
-}
-
-val baseVersion = "0.0"
-val buildNumber = try {
-    gitCommand("rev-list", "--count", "HEAD")
-} catch (e: Exception) {
-    "0"
-}
-
-version = "$baseVersion.$buildNumber"
-
-
-tasks.register("printVersion") {
-    doLast {
-        println(project.version)
-    }
-}
-
-
+version = "0.0.13"
 
 repositories {
     mavenCentral()
