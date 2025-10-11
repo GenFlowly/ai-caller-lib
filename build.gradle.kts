@@ -66,10 +66,7 @@ publishing {
             groupId = project.group.toString()
             artifactId = "ai-caller-lib"
             version = project.version.toString()
-            artifact(tasks["jar"])
-
-            artifact(tasks["sourcesJar"])
-            artifact(tasks["javadocJar"])
+            from(components["java"])
 
             // Optional: Add more metadata
             pom {
