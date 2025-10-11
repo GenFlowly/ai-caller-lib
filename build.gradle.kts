@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.genflowly"
-version = "0.0.17"
+version = "0.0.18"
 
 repositories {
     mavenCentral()
@@ -66,7 +66,10 @@ publishing {
             groupId = project.group.toString()
             artifactId = "ai-caller-lib"
             version = project.version.toString()
-            from(components["java"])
+            artifact(tasks["jar"])
+
+            artifact(tasks["sourcesJar"])
+            artifact(tasks["javadocJar"])
 
             // Optional: Add more metadata
             pom {
