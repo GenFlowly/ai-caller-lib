@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.genflowly"
-version = "0.0.20"
+version = "0.0.21"
 
 repositories {
     mavenCentral()
@@ -25,17 +25,17 @@ val ktorVersion = "3.0.0"
 
 dependencies {
     // Main dependencies
-    api("io.ktor:ktor-client-core:$ktorVersion")
-    api("io.ktor:ktor-client-cio:$ktorVersion")
-    api("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-    api("io.insert-koin:koin-core:$koinVersion")
-    api("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
-    api("io.github.microutils:kotlin-logging-jvm:3.0.5")
-    api("org.slf4j:slf4j-simple:2.0.9")
-    implementation("com.anthropic:anthropic-java:2.8.1")
-    implementation("com.google.genai:google-genai:1.4.1")
-    implementation("com.openai:openai-java:4.2.0")
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.insert-koin:koin-core:$koinVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
+    implementation("org.slf4j:slf4j-simple:2.0.9")
+    api("com.anthropic:anthropic-java:2.8.1")
+    api("com.google.genai:google-genai:1.4.1")
+    api("com.openai:openai-java:4.2.0")
     implementation(platform("io.insert-koin:koin-bom:$koinVersion"))
 
     // Test dependencies
