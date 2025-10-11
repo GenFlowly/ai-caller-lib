@@ -6,7 +6,7 @@ import com.openai.models.responses.ResponseOutputMessage
 import java.util.*
 
 
-class OpenAIResponse(response: Response) : AIResponse<Response> {
+class OpenAIResponse(response: Response) : AIResponse {
     private val response: Response
 
     init {

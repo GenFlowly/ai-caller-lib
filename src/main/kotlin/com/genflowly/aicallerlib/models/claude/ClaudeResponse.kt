@@ -3,7 +3,7 @@ package com.genflowly.aicallerlib.models.claude
 import com.anthropic.models.messages.Message
 import com.genflowly.aicallerlib.models.AIResponse
 
-class ClaudeResponse(response: Message) : AIResponse<Message> {
+class ClaudeResponse(response: Message) : AIResponse {
     private val response: Message
 
     init {

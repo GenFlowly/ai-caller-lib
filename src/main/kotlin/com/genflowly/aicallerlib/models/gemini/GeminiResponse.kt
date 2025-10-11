@@ -3,7 +3,7 @@ package com.genflowly.aicallerlib.models.gemini
 import com.genflowly.aicallerlib.models.AIResponse
 import com.google.genai.types.GenerateContentResponse
 
-class GeminiResponse(response: GenerateContentResponse) : AIResponse<GenerateContentResponse> {
+class GeminiResponse(response: GenerateContentResponse) : AIResponse {
     private val response: GenerateContentResponse
 
     init {

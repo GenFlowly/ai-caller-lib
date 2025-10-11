@@ -8,7 +8,7 @@ import org.koin.core.component.get
 import org.koin.core.qualifier.named
 
 class AIProviderFactory: KoinComponent {
-    inline fun <reified T : AIResponse<*>> getProvider(vendor: AIVendor): AIProvider<T> {
+    inline fun <reified T : AIResponse> getProvider(vendor: AIVendor): AIProvider<T> {
         return when (vendor) {
             AIVendor.OPENAI -> get<AIProvider<T>>(named(AIVendor.OPENAI))
             AIVendor.GEMINI -> get<AIProvider<T>>(named(AIVendor.GEMINI))
