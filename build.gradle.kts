@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.genflowly"
-version = "0.0.22"
+version = "0.0.23"
 
 repositories {
     mavenCentral()
@@ -28,7 +28,7 @@ dependencies {
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-    implementation("io.insert-koin:koin-core:$koinVersion")
+    api("io.insert-koin:koin-core:$koinVersion")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
@@ -36,7 +36,7 @@ dependencies {
     api("com.anthropic:anthropic-java:2.8.1")
     api("com.google.genai:google-genai:1.4.1")
     api("com.openai:openai-java:4.2.0")
-    implementation(platform("io.insert-koin:koin-bom:$koinVersion"))
+    api(platform("io.insert-koin:koin-bom:$koinVersion"))
 
     // Test dependencies
     testImplementation(kotlin("test"))
