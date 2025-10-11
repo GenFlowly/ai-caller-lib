@@ -6,7 +6,7 @@ plugins {
 
 group = "com.genflowly"
 
-version = "0.0.13"
+version = "0.0.14"
 
 repositories {
     mavenCentral()
@@ -29,6 +29,10 @@ publishing {
             artifactId = "ai-caller-lib"
             version = project.version.toString()
             from(components["kotlin"])
+        }
+
+        named("kotlinMultiplatform") {
+            tasks.forEach { it.enabled = false }
         }
     }
 }
