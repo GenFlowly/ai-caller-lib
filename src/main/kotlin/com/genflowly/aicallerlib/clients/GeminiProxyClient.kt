@@ -8,10 +8,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mu.KLogger
 
-class GeminiProvider(
+class GeminiProxyClient(
     private val client: Client,
     private val logger: KLogger
-) : AIProvider<GeminiResponse> {
+) : AIClient<GeminiResponse> {
     
     override suspend fun generateResponse(
         request: AIRequest

@@ -10,10 +10,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mu.KLogger
 
-class ClaudeProvider(
+class ClaudeProxyClient(
     private val client: AnthropicClient,
     private val logger: KLogger
-) : AIProvider<ClaudeResponse> {
+) : AIClient<ClaudeResponse> {
     override suspend fun generateResponse(
         request: AIRequest
     ): ClaudeResponse = withContext(Dispatchers.IO) {

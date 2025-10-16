@@ -1,5 +1,5 @@
 
-import com.genflowly.aicallerlib.clients.AIProvider
+import com.genflowly.aicallerlib.clients.AIClient
 import com.genflowly.aicallerlib.models.AIRequest
 import com.genflowly.aicallerlib.models.openai.OpenAIRequest
 import com.genflowly.aicallerlib.models.openai.OpenAIResponse
@@ -11,10 +11,10 @@ import kotlinx.coroutines.withContext
 import mu.KLogger
 
 
-class OpenAIProvider(
+class OpenAIProxyClient(
     private val client: OpenAIClient,
     private val logger: KLogger
-) : AIProvider<OpenAIResponse> {
+) : AIClient<OpenAIResponse> {
 
     override suspend fun generateResponse(
         request: AIRequest
