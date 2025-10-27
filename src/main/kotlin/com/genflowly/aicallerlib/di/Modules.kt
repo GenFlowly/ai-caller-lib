@@ -6,8 +6,11 @@ import com.genflowly.aicallerlib.clients.AIClient
 import com.genflowly.aicallerlib.clients.ClaudeProxyClient
 import com.genflowly.aicallerlib.clients.GeminiProxyClient
 import com.genflowly.aicallerlib.models.AIVendor
+import com.genflowly.aicallerlib.models.claude.ClaudeModelsListResponse
 import com.genflowly.aicallerlib.models.claude.ClaudeResponse
+import com.genflowly.aicallerlib.models.gemini.GeminiModelsListResponse
 import com.genflowly.aicallerlib.models.gemini.GeminiResponse
+import com.genflowly.aicallerlib.models.openai.OpenAIModelsListResponse
 import com.genflowly.aicallerlib.models.openai.OpenAIResponse
 import com.google.genai.Client
 import com.openai.client.OpenAIClient
@@ -36,19 +39,22 @@ fun commonModule(): Module = module {
     //
     // Tenant-scoped AIProvider factories
     //
-    factory<AIClient<GeminiResponse>>(named(AIVendor.GEMINI)) { (apiKey: String) ->
+    factory<AIClient<GeminiResponse, GeminiModelsListResponse>>(named(AIVendor.GEMINI)) { (apiKey:
+    String) ->
         val client: Client = get { parametersOf(apiKey) }
         val log: KLogger = get()
         GeminiProxyClient(client, log)
     }
 
-    factory<AIClient<ClaudeResponse>>(named(AIVendor.CLAUDE)) { (apiKey: String) ->
+    factory<AIClient<ClaudeResponse, ClaudeModelsListResponse>>(named(AIVendor.CLAUDE)) { (apiKey:
+    String) ->
         val client: AnthropicClient = get { parametersOf(apiKey) }
         val log: KLogger = get()
         ClaudeProxyClient(client, log)
     }
 
-    factory<AIClient<OpenAIResponse>>(named(AIVendor.OPENAI)) { (apiKey: String) ->
+    factory<AIClient<OpenAIResponse, OpenAIModelsListResponse>>(named(AIVendor.OPENAI)) { (apiKey:
+    String) ->
         val client: OpenAIClient = get { parametersOf(apiKey) }
         val log: KLogger = get()
         OpenAIProxyClient(client, log)
