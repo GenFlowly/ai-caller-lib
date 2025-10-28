@@ -39,6 +39,6 @@ class ClaudeProxyClient(
         }
 
     override suspend fun listTextGenerationModels(): ClaudeModelsListResponse {
-        TODO("Not yet implemented")
+        return listAllModels()
     }
 }

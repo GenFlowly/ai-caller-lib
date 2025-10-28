@@ -22,6 +22,8 @@ class GeminiModelsListResponse(
         return "GeminiModelsListResponse(models=$models)"
     }
 
+    override fun toList(): List<String> = getCleanModelNames()
+
     companion object {
         fun fromPager(pager: Pager<Model>): GeminiModelsListResponse {
             return GeminiModelsListResponse(modelPager = pager)

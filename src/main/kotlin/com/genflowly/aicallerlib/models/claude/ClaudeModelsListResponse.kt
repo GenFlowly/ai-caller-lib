@@ -10,6 +10,10 @@ class ClaudeModelsListResponse(
 
     fun getModels(): List<ModelInfo> = modelListPage.data()
 
+    override fun toList(): List<String> {
+        return modelListPage.data().map { it.id() }
+    }
+
     override fun toString(): String {
         return "ClaudeModelsListResponse(models=${modelListPage.data().map { it.id() }})"
     }

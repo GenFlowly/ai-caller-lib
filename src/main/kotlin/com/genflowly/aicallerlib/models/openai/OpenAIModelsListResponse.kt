@@ -19,6 +19,10 @@ class OpenAIModelsListResponse(
         })"
     }
 
+    override fun toList(): List<String> {
+        return getModels().map { it.id() }
+    }
+
     companion object {
         fun fromPage(page: ModelListPage): OpenAIModelsListResponse {
             return OpenAIModelsListResponse(modelsListPage = page)
