@@ -9,6 +9,8 @@ import com.google.genai.Pager
 import com.google.genai.types.ListModelsConfig
 import com.google.genai.types.Model
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import mu.KLogger
 
@@ -32,6 +34,25 @@ class GeminiProxyClient(
 
 
         GeminiResponse(response)
+    }
+
+    override suspend fun generateResponseStream(
+        request: AIRequest
+    ): Flow<GeminiResponse> {
+        require(request is GeminiRequest) {
+            "AIRequest must be of type GeminiRequest"
+        }
+
+        return kotlinx.coroutines.flow.flow {
+            val stream = client.models.generateContentStream(
+                request.getRequest().model().get(),
+                request.getRequest().contents().get()[0].text(),
+                null
+            )
+            for (response in stream) {
+                emit(GeminiResponse(response))
+            }
+        }
     }
 
     override suspend fun listAllModels(): GeminiModelsListResponse =

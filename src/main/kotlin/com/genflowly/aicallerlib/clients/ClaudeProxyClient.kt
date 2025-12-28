@@ -9,6 +9,7 @@ import com.genflowly.aicallerlib.models.claude.ClaudeModelsListResponse
 import com.genflowly.aicallerlib.models.claude.ClaudeRequest
 import com.genflowly.aicallerlib.models.claude.ClaudeResponse
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import mu.KLogger
 
@@ -29,6 +30,23 @@ class ClaudeProxyClient(
 
 
         ClaudeResponse(response)
+    }
+
+    override suspend fun generateResponseStream(request: AIRequest): Flow<ClaudeResponse> {
+        require(request is ClaudeRequest) {
+            "AIRequest must be of type ClaudeRequest"
+        }
+
+        val params: MessageCreateParams = request.getParams()
+
+        return kotlinx.coroutines.flow.flow {
+            val streamResponse = client.messages().createStreaming(params)
+            streamResponse.use { stream ->
+                for (chunk in stream.stream()) {
+                    emit(ClaudeResponse(chunk))
+                }
+            }
+        }
     }
 
     override suspend fun listAllModels(): ClaudeModelsListResponse =

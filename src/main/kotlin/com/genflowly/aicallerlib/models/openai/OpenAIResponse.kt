@@ -6,15 +6,29 @@ import com.openai.models.responses.ResponseOutputMessage
 import java.util.*
 
 
-class OpenAIResponse(response: Response) : AIResponse {
-    private val response: Response
+import com.openai.models.responses.ResponseStreamEvent
 
-    init {
+class OpenAIResponse : AIResponse {
+    private val response: Response?
+    private val streamEvent: ResponseStreamEvent?
+
+    constructor(response: Response) {
         this.response = response
+        this.streamEvent = null
+    }
+
+    constructor(event: ResponseStreamEvent) {
+        this.response = null
+        this.streamEvent = event
     }
 
     override fun getText(): String {
-        if (response.output().isEmpty()) {
+        if (streamEvent != null) {
+            val delta = streamEvent.outputTextDelta()
+            return if (delta.isPresent) delta.get().delta() else ""
+        }
+
+        if (response == null || response.output().isEmpty()) {
             return ""
         }
 
@@ -37,13 +51,14 @@ class OpenAIResponse(response: Response) : AIResponse {
         return sb.toString().trim()
     }
 
-    override fun getRawResponse(): Response {
-        return response
+    override fun getRawResponse(): Any {
+        return response ?: streamEvent!!
     }
 
     override fun toString(): String {
         return "OpenAIResponse{" +
                 "response=" + response +
+                ", streamEvent=" + streamEvent +
                 '}'
     }
 }

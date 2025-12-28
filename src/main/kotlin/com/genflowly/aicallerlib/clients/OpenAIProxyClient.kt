@@ -1,5 +1,4 @@
-
-import com.genflowly.aicallerlib.clients.AIClient
+package com.genflowly.aicallerlib.clients
 import com.genflowly.aicallerlib.models.AIRequest
 import com.genflowly.aicallerlib.models.openai.OpenAIModelsListResponse
 import com.genflowly.aicallerlib.models.openai.OpenAIRequest
@@ -9,6 +8,7 @@ import com.openai.models.models.ModelListPage
 import com.openai.models.responses.Response
 import com.openai.models.responses.ResponseCreateParams
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import mu.KLogger
 
@@ -30,6 +30,23 @@ class OpenAIProxyClient(
         val response: Response = client.responses().create(params)
 
         OpenAIResponse(response)
+    }
+
+    override suspend fun generateResponseStream(request: AIRequest): Flow<OpenAIResponse> {
+        require(request is OpenAIRequest) {
+            "AIRequest must be of type OpenAIRequest"
+        }
+
+        val params: ResponseCreateParams = request.getParams()
+
+        return kotlinx.coroutines.flow.flow {
+            val streamResponse = client.responses().createStreaming(params)
+            streamResponse.use { stream ->
+                for (chunk in stream.stream()) {
+                    emit(OpenAIResponse(chunk))
+                }
+            }
+        }
     }
 
     override suspend fun listAllModels(): OpenAIModelsListResponse =

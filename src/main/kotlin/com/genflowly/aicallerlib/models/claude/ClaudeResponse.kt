@@ -3,21 +3,41 @@ package com.genflowly.aicallerlib.models.claude
 import com.anthropic.models.messages.Message
 import com.genflowly.aicallerlib.models.AIResponse
 
-class ClaudeResponse(response: Message) : AIResponse {
-    private val response: Message
+import com.anthropic.models.messages.RawMessageStreamEvent
 
-    init {
+class ClaudeResponse : AIResponse {
+    private val response: Message?
+    private val streamEvent: RawMessageStreamEvent?
+
+    constructor(response: Message) {
         this.response = response
+        this.streamEvent = null
+    }
+
+    constructor(event: RawMessageStreamEvent) {
+        this.response = null
+        this.streamEvent = event
     }
 
     override fun getText(): String {
-        if (response.content().isEmpty()) {
+        if (streamEvent != null) {
+            val deltaEvent = streamEvent.contentBlockDelta()
+            if (deltaEvent.isPresent) {
+                 val delta = deltaEvent.get().delta()
+                 if (delta.text().isPresent) {
+                     return delta.text().get().text()
+                 }
+            }
+            return ""
+        }
+
+        if (response == null || response.content().isEmpty()) {
             return ""
         }
 
         val textContent = response.content()
             .mapNotNull { contentBlock ->
-                contentBlock.text().orElse(null)?.text()
+                contentBlock.text().orElse(null)
             }
             .joinToString("")
 
@@ -25,13 +45,14 @@ class ClaudeResponse(response: Message) : AIResponse {
 
     }
 
-    override fun getRawResponse(): Message {
-        return response
+    override fun getRawResponse(): Any {
+        return response ?: streamEvent!!
     }
 
     override fun toString(): String {
         return "ClaudeResponse{" +
                 "response=" + response +
+                ", streamEvent=" + streamEvent +
                 '}'
     }
 }

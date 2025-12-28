@@ -1,6 +1,6 @@
 package com.genflowly.aicallerlib.di
 
-import OpenAIProxyClient
+import com.genflowly.aicallerlib.clients.OpenAIProxyClient
 import com.anthropic.client.AnthropicClient
 import com.genflowly.aicallerlib.clients.AIClient
 import com.genflowly.aicallerlib.clients.ClaudeProxyClient
