@@ -10,7 +10,6 @@ import com.google.genai.types.ListModelsConfig
 import com.google.genai.types.Model
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import mu.KLogger
 
@@ -28,8 +27,8 @@ class GeminiProxyClient(
 
         val response = client.models.generateContent(
             request.getRequest().model().get(),
-            request.getRequest().contents().get()[0].text(),
-            null
+            request.getRequest().contents().get(),
+            request.getRequest().config().orElse(null)
         )
 
 
@@ -46,8 +45,8 @@ class GeminiProxyClient(
         return kotlinx.coroutines.flow.flow {
             val stream = client.models.generateContentStream(
                 request.getRequest().model().get(),
-                request.getRequest().contents().get()[0].text(),
-                null
+                request.getRequest().contents().get(),
+                request.getRequest().config().orElse(null)
             )
             for (response in stream) {
                 emit(GeminiResponse(response))
