@@ -1,12 +1,12 @@
 package com.genflowly.aicallerlib.models.openai
 
 import com.genflowly.aicallerlib.models.AIResponse
+import com.genflowly.aicallerlib.models.AIUsageMetadata
 import com.openai.models.responses.Response
 import com.openai.models.responses.ResponseOutputMessage
-import java.util.*
-
-
 import com.openai.models.responses.ResponseStreamEvent
+import com.openai.models.responses.ResponseUsage
+import java.util.*
 
 class OpenAIResponse : AIResponse {
     private val response: Response?
@@ -53,6 +53,29 @@ class OpenAIResponse : AIResponse {
 
     override fun getRawResponse(): Any {
         return response ?: streamEvent!!
+    }
+
+    override fun getUsageMetadata(): AIUsageMetadata? {
+        val usageSource: ResponseUsage? = when {
+            response != null -> response.usage().orElse(null)
+            streamEvent != null -> streamEvent.completed().orElse(null)
+                ?.response()?.usage()?.orElse(null)
+            else -> null
+        }
+        return usageSource?.toOpenAIUsageMetadata()
+    }
+
+    private fun ResponseUsage.toOpenAIUsageMetadata(): OpenAIUsageMetadata {
+        val cachedTokens: Long? = runCatching { inputTokensDetails().cachedTokens() }.getOrNull()
+        val reasoningTokens: Long? = runCatching { outputTokensDetails().reasoningTokens() }.getOrNull()
+
+        return OpenAIUsageMetadata(
+            inputTokens = runCatching { inputTokens().toInt() }.getOrNull(),
+            outputTokens = runCatching { outputTokens().toInt() }.getOrNull(),
+            totalTokens = runCatching { totalTokens().toInt() }.getOrNull(),
+            inputTokensDetails = OpenAIInputTokensDetails(cachedTokens = cachedTokens),
+            outputTokensDetails = OpenAIOutputTokensDetails(reasoningTokens = reasoningTokens)
+        )
     }
 
     override fun toString(): String {

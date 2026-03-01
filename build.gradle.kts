@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.genflowly"
-version = "0.0.32"
+version = "0.0.33"
 
 repositories {
     mavenCentral()
