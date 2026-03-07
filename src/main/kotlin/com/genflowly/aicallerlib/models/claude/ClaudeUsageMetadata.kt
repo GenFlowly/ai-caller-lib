@@ -10,7 +10,12 @@ data class ClaudeUsageMetadata(
     val cacheCreation: ClaudeCacheCreation?,
     val serverToolUse: ClaudeServerToolUsage?,
     val serviceTier: String?
-) : AIUsageMetadata
+) : AIUsageMetadata {
+    override fun getInputTokenCount(): Long? = inputTokens
+    override fun getOutputTokenCount(): Long? = outputTokens
+    override fun getTotalTokenCount(): Long? = (inputTokens ?: 0L) + (outputTokens ?: 0L)
+    override fun getTokenCountReadFromCache(): Long? = cacheReadInputTokens
+}
 
 
 data class ClaudeCacheCreation(

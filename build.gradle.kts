@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.genflowly"
-version = "0.0.33"
+version = "0.0.34"
 
 repositories {
     mavenCentral()
@@ -33,9 +33,12 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
     implementation("org.slf4j:slf4j-simple:2.0.9")
-    api("com.anthropic:anthropic-java:2.11.1")
-    api("com.google.genai:google-genai:1.32.0")
-    api("com.openai:openai-java:4.8.0")
+//https://github.com/anthropics/anthropic-sdk-java
+    api("com.anthropic:anthropic-java:2.16.0")
+//https://github.com/googleapis/java-genai
+    api("com.google.genai:google-genai:1.34.0")
+//https://github.com/openai/openai-java
+    api("com.openai:openai-java:4.25.0")
     api(platform("io.insert-koin:koin-bom:$koinVersion"))
 
     // Test dependencies

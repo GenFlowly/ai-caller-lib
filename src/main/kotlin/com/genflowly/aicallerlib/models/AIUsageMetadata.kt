@@ -5,4 +5,9 @@ package com.genflowly.aicallerlib.models
  * Cast to the concrete type ({@link GeminiUsageMetadata}, {@link OpenAIUsageMetadata},
  * {@link ClaudeUsageMetadata}) to access provider-specific fields.
  */
-interface AIUsageMetadata
+interface AIUsageMetadata {
+    fun getInputTokenCount(): Long?
+    fun getOutputTokenCount(): Long?
+    fun getTotalTokenCount(): Long?
+    fun getTokenCountReadFromCache(): Long?
+}

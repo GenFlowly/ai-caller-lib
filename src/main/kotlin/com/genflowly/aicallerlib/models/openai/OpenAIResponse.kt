@@ -56,16 +56,27 @@ class OpenAIResponse : AIResponse {
     }
 
     override fun getUsageMetadata(): AIUsageMetadata? {
-        val usageSource: ResponseUsage? = when {
-            response != null -> response.usage().orElse(null)
-            streamEvent != null -> streamEvent.completed().orElse(null)
+        val raw = getRawResponse()
+
+        val usageSource: ResponseUsage? = when (raw) {
+            is Response -> raw.usage().orElse(null)
+            is ResponseStreamEvent -> raw.completed().orElse(null)
                 ?.response()?.usage()?.orElse(null)
             else -> null
         }
-        return usageSource?.toOpenAIUsageMetadata()
+
+        val cacheKey: String? = when (raw) {
+            is Response -> runCatching { raw.promptCacheKey().orElse(null) }.getOrNull()
+            is ResponseStreamEvent -> runCatching {
+                raw.completed().orElse(null)?.response()?.promptCacheKey()?.orElse(null)
+            }.getOrNull()
+            else -> null
+        }
+
+        return usageSource?.toOpenAIUsageMetadata(cacheKey)
     }
 
-    private fun ResponseUsage.toOpenAIUsageMetadata(): OpenAIUsageMetadata {
+    private fun ResponseUsage.toOpenAIUsageMetadata(promptCacheKey: String?): OpenAIUsageMetadata {
         val cachedTokens: Long? = runCatching { inputTokensDetails().cachedTokens() }.getOrNull()
         val reasoningTokens: Long? = runCatching { outputTokensDetails().reasoningTokens() }.getOrNull()
 
@@ -74,7 +85,8 @@ class OpenAIResponse : AIResponse {
             outputTokens = runCatching { outputTokens().toInt() }.getOrNull(),
             totalTokens = runCatching { totalTokens().toInt() }.getOrNull(),
             inputTokensDetails = OpenAIInputTokensDetails(cachedTokens = cachedTokens),
-            outputTokensDetails = OpenAIOutputTokensDetails(reasoningTokens = reasoningTokens)
+            outputTokensDetails = OpenAIOutputTokensDetails(reasoningTokens = reasoningTokens),
+            promptCacheKey = promptCacheKey
         )
     }
 

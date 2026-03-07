@@ -18,7 +18,12 @@ data class GeminiUsageMetadata(
     val toolUsePromptTokensDetails: List<GeminiModalityTokenCount>?,
 
     val trafficType: String?
-) : AIUsageMetadata
+) : AIUsageMetadata {
+    override fun getInputTokenCount(): Long? = promptTokens?.toLong()
+    override fun getOutputTokenCount(): Long? = completionTokens?.toLong()
+    override fun getTotalTokenCount(): Long? = totalTokens?.toLong()
+    override fun getTokenCountReadFromCache(): Long? = cachedContentTokenCount?.toLong()
+}
 
 
 data class GeminiModalityTokenCount(

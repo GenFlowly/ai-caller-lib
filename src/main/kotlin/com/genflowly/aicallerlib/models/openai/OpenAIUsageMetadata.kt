@@ -7,8 +7,14 @@ data class OpenAIUsageMetadata(
     val outputTokens: Int?,
     val totalTokens: Int?,
     val inputTokensDetails: OpenAIInputTokensDetails?,
-    val outputTokensDetails: OpenAIOutputTokensDetails?
-) : AIUsageMetadata
+    val outputTokensDetails: OpenAIOutputTokensDetails?,
+    val promptCacheKey: String? = null
+) : AIUsageMetadata {
+    override fun getInputTokenCount(): Long? = inputTokens?.toLong()
+    override fun getOutputTokenCount(): Long? = outputTokens?.toLong()
+    override fun getTotalTokenCount(): Long? = totalTokens?.toLong()
+    override fun getTokenCountReadFromCache(): Long? = inputTokensDetails?.cachedTokens
+}
 
 data class OpenAIInputTokensDetails(
     val cachedTokens: Long?
