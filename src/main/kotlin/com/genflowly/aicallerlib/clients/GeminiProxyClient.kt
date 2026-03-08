@@ -32,7 +32,12 @@ class GeminiProxyClient(
         )
 
 
-        GeminiResponse(response)
+        val aiResponse = GeminiResponse(response)
+        aiResponse.getUsageMetadata()?.let { usage ->
+            logger.info { "Gemini Raw Response: ${aiResponse.getRawResponse()}" }
+            logger.info { "Gemini Usage Metadata: $usage" }
+        }
+        aiResponse
     }
 
     override suspend fun generateResponseStream(
@@ -49,7 +54,12 @@ class GeminiProxyClient(
                 request.getRequest().config().orElse(null)
             )
             for (response in stream) {
-                emit(GeminiResponse(response))
+                val aiResponse = GeminiResponse(response)
+                aiResponse.getUsageMetadata()?.let { usage ->
+                    logger.info { "Gemini Raw Response: ${aiResponse.getRawResponse()}" }
+                    logger.info { "Gemini Usage Metadata: $usage" }
+                }
+                emit(aiResponse)
             }
         }
     }

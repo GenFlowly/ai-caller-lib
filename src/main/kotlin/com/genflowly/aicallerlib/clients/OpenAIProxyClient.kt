@@ -29,7 +29,12 @@ class OpenAIProxyClient(
 
         val response: Response = client.responses().create(params)
 
-        OpenAIResponse(response)
+        val aiResponse = OpenAIResponse(response)
+        aiResponse.getUsageMetadata()?.let { usage ->
+            logger.info { "OpenAI Raw Response: ${aiResponse.getRawResponse()}" }
+            logger.info { "OpenAI Usage Metadata: $usage" }
+        }
+        aiResponse
     }
 
     override suspend fun generateResponseStream(request: AIRequest): Flow<OpenAIResponse> {
@@ -43,7 +48,12 @@ class OpenAIProxyClient(
             val streamResponse = client.responses().createStreaming(params)
             streamResponse.use { stream ->
                 for (chunk in stream.stream()) {
-                    emit(OpenAIResponse(chunk))
+                    val aiResponse = OpenAIResponse(chunk)
+                    aiResponse.getUsageMetadata()?.let { usage ->
+                        logger.info { "OpenAI Raw Response: ${aiResponse.getRawResponse()}" }
+                        logger.info { "OpenAI Usage Metadata: $usage" }
+                    }
+                    emit(aiResponse)
                 }
             }
         }

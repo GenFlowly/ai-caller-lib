@@ -29,7 +29,12 @@ class ClaudeProxyClient(
         val response: Message = client.messages().create(params)
 
 
-        ClaudeResponse(response)
+        val aiResponse = ClaudeResponse(response)
+        aiResponse.getUsageMetadata()?.let { usage ->
+            logger.info { "Claude Raw Response: ${aiResponse.getRawResponse()}" }
+            logger.info { "Claude Usage Metadata: $usage" }
+        }
+        aiResponse
     }
 
     override suspend fun generateResponseStream(request: AIRequest): Flow<ClaudeResponse> {
@@ -43,7 +48,12 @@ class ClaudeProxyClient(
             val streamResponse = client.messages().createStreaming(params)
             streamResponse.use { stream ->
                 for (chunk in stream.stream()) {
-                    emit(ClaudeResponse(chunk))
+                    val aiResponse = ClaudeResponse(chunk)
+                    aiResponse.getUsageMetadata()?.let { usage ->
+                        logger.info { "Claude Raw Response: ${aiResponse.getRawResponse()}" }
+                        logger.info { "Claude Usage Metadata: $usage" }
+                    }
+                    emit(aiResponse)
                 }
             }
         }
